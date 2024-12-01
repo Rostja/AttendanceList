@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <title>Attendance List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+    <h2>Attendance List</h2>
+
+    <!-- Search Forms -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <form th:action="@{/attendance/search}" method="get">
+                <div class="input-group">
+                    <input type="text" name="employeeName" class="form-control" placeholder="Search by name">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <form th:action="@{/attendance/search-date}" method="get">
+                <div class="input-group">
+                    <input type="date" name="date" class="form-control">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Search by Date</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <a th:href="@{/attendance/present}" class="btn btn-info">Show Present Only</a>
+            <a th:href="@{/attendance/new}" class="btn btn-primary">Add New</a>
+        </div>
+    </div>
+
+    <!-- Attendance Table -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Worked Hours</th>
+            <th>Present</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="attendance : ${attendances}">
+            <td th:text="${attendance.employeeName}"></td>
+            <td th:text="${attendance.date != null ? #temporals.format(attendance.date, 'yyyy-MM-dd') : 'N/A'}"></td>
+            <td th:text="${attendance.workedHours}"></td>
+            <td th:text="${attendance.present}"></td>
+            <td>
+                <a th:href="@{/attendance/edit/{id}(id=${attendance.id})}"
+                   class="btn btn-sm btn-warning">Edit</a>
+                <a th:href="@{/attendance/delete/{id}(id=${attendance.id})}"
+                   class="btn btn-sm btn-danger"
+                   onclick="return confirm('Are you sure?')">Delete</a>
+
+                <!-- Increase Hours Form -->
+                <form th:action="@{/attendance/increase-hours/{id}(id=${attendance.id})}"
+                      method="post" style="display: inline;">
+                    <input type="number" name="additionalHours" style="width: 60px">
+                    <button type="submit" class="btn btn-sm btn-success">Add Hours</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+  <title>Add/Edit Attendance</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+  <h2>Add/Edit Attendance</h2>
+  <!-- Dôležitá zmena je tu v action atribúte -->
+  <form th:action="@{/attendance/new}" method="post" th:object="${attendance}">
+    <div class="form-group">
+      <label for="employeeName">Employee Name</label>
+      <input type="text" class="form-control" id="employeeName" th:field="*{employeeName}" required>
+    </div>
+    <div class="form-group">
+      <label for="date">Date</label>
+      <input type="date" class="form-control" id="date" th:field="*{date}" required>
+    </div>
+    <div class="form-group">
+      <label for="workedHours">Worked Hours</label>
+      <input type="number" class="form-control" id="workedHours" th:field="*{workedHours}" required>
+    </div>
+    <div class="form-group">
+      <label for="present">Present</label>
+      <input type="checkbox" class="form-control" id="present" th:field="*{present}">
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="/attendance" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+</body>
+</html>
